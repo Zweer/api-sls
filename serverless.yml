@@ -1,5 +1,5 @@
 service:
-  name: hotvenue-api-sls
+  name: hotvenue
 # app and org for use with dashboard.serverless.com
 #app: your-app-name
 #org: your-org-name
@@ -8,23 +8,111 @@ custom:
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
+  resourceNames:
+    tables:
+      devices: ${self:service}-${self:provider.stage}-devices
+      locations: ${self:service}-${self:provider.stage}-locations
+      media: ${self:service}-${self:provider.stage}-media
+      users: ${self:service}-${self:provider.stage}-users
 
 # Add the serverless-webpack plugin
 plugins:
   - serverless-webpack
+  - serverless-iam-roles-per-function
 
 provider:
   name: aws
   runtime: nodejs12.x
+  stage: ${opt:stage, 'dev'}
+  region: ${opt:region, 'eu-west-1'}
+  profile: nic
   apiGateway:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    DYNAMODB_TABLE_DEVICES: ${self:custom.resourceNames.tables.devices}
+    DYNAMODB_TABLE_LOCATIONS: ${self:custom.resourceNames.tables.locations}
+    DYNAMODB_TABLE_MEDIA: ${self:custom.resourceNames.tables.media}
+    DYNAMODB_TABLE_USERS: ${self:custom.resourceNames.tables.users}
 
 functions:
-  hello:
-    handler: handler.hello
+  devicesCreate:
+    handler: src/handlers/devices.create
+    events:
+      - http:
+          method: post
+          path: devices
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - dynamodb:PutItem
+        Resource:
+          Fn::GetAtt: [devices, Arn]
+
+  devicesList:
+    handler: src/handlers/devices.list
     events:
       - http:
           method: get
-          path: hello
+          path: devices
+    iamRoleStatements:
+        - Effect: Allow
+          Action:
+            - dynamodb:GetItem
+          Resource:
+            Fn::GetAtt: [devices, Arn]
+
+resources:
+  Resources:
+    devices:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.resourceNames.tables.devices}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    locations:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.resourceNames.tables.locations}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    media:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.resourceNames.tables.media}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    users:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.resourceNames.tables.users}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
