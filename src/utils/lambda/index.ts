@@ -1,3 +1,5 @@
+import 'reflect-metadata';
+
 import { HttpError } from 'http-errors';
 import * as createHttpError from 'http-errors';
 

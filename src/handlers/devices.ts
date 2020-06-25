@@ -1,22 +1,20 @@
-import middy from '@middy/core';
-import httpJsonBodyParser from '@middy/http-json-body-parser';
-import httpUrlEncodeBodyParser from '@middy/http-urlencode-body-parser';
-
 import { Device } from '../models/device';
+
 import { handler } from '../utils/lambda';
 import { param } from '../utils/lambda/middlewares/path-params';
-
-export const create = middy(async (event) => {
-  const device = Object.assign(new Device(), event.body);
-
-  await device.put();
-
-  return { result: true };
-})
-  .use(httpJsonBodyParser())
-  .use(httpUrlEncodeBodyParser());
+import { body } from '../utils/lambda/middlewares/body-parser';
 
 class DevicesHandlers {
+  @handler
+  // eslint-disable-next-line class-methods-use-this
+  async create(@body() deviceObj) {
+    const device = Object.assign(new Device(), deviceObj);
+
+    await device.put();
+
+    return device;
+  }
+
   @handler
   // eslint-disable-next-line class-methods-use-this
   async list() {
@@ -37,11 +35,12 @@ class DevicesHandlers {
 
     await device.destroy();
 
-    return { success: true };
+    return device;
   }
 }
 
 const devicesHandlers = new DevicesHandlers();
 
+export const create = (event) => devicesHandlers.create(event);
 export const list = () => devicesHandlers.list();
 export const destroy = (event) => devicesHandlers.destroy(event);

@@ -42,12 +42,14 @@ export class AbstractModel {
   async put<T>(options?: PutOptions) {
     this.updatedAt = new Date();
 
-    return mapper.put<T>(this as any, options);
+    const model = await mapper.put<T>(this as any, options);
+    Object.assign(this, model);
   }
 
   async destroy<T extends AbstractModel>(
     options?: DeleteOptions,
-  ): Promise<T | undefined> {
-    return mapper.delete<T>(this as any, options);
+  ) {
+    const model = await mapper.delete<T>(this as any, options);
+    Object.assign(this, model);
   }
 }

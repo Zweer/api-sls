@@ -536,32 +536,6 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
-"@middy/core@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@middy/core/-/core-1.0.0.tgz#81b158dd7e90f3bc33645f8627ad63433ce6ed9e"
-  integrity sha512-97niLTWQMK/zixQoFdkpVzskxkkj5r+TdYABOHFN1GittBcqVFZ/4dEKissmL1eQASIb/70RpHlbcDxWQfoPCA==
-  dependencies:
-    once "^1.4.0"
-
-"@middy/http-json-body-parser@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@middy/http-json-body-parser/-/http-json-body-parser-1.0.0.tgz#50c6e2c9541424f35d094ebcc5f944472bfecb20"
-  integrity sha512-Co3wFcHPSgDNxCMzpEolWF5qQ6K46aAjEFGGz/jUzs01HfapqwtU7AYXZTWp3j+rVwIE0Vg+QlT5Ir+eQCg5Ng==
-  dependencies:
-    "@types/http-errors" "^1.6.1"
-    content-type "^1.0.4"
-    http-errors "^1.6.3"
-
-"@middy/http-urlencode-body-parser@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@middy/http-urlencode-body-parser/-/http-urlencode-body-parser-1.0.0.tgz#b3d56f9fdce913e90515e4baf416f9230d291ead"
-  integrity sha512-wLksL92ZQW+1tD51Dx6iT81Om9T//LGPG9tA2XQFovTl4/95PxApR9lteMVkxoTE56JwYwCATIvL2PnjF1ENGw==
-  dependencies:
-    "@types/http-errors" "^1.6.1"
-    content-type "^1.0.4"
-    qs "^6.5.2"
-    querystring "^0.2.0"
-
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -984,11 +958,6 @@
   integrity sha512-AiHRaEB50LQg0pZmm659vNBb9f4SJ0qrAnteuzhSeAUcJKxoYgEnprg/83kppCnc2zvtCKbdZry1a5pVY3lOTQ==
   dependencies:
     "@types/node" "*"
-
-"@types/http-errors@^1.6.1":
-  version "1.6.3"
-  resolved "https://registry.yarnpkg.com/@types/http-errors/-/http-errors-1.6.3.tgz#619a55768eab98299e8f76747339f3373f134e69"
-  integrity sha512-4KCE/agIcoQ9bIfa4sBxbZdnORzRjIw8JNQPLfqoNv7wQl/8f8mRbW68Q8wBsQFoJkPUHGlQYZ9sqi5WpfGSEQ==
 
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0", "@types/istanbul-lib-coverage@^2.0.1":
   version "2.0.3"
@@ -4658,7 +4627,7 @@ http-cache-semantics@^4.0.0:
   resolved "https://registry.yarnpkg.com/http-cache-semantics/-/http-cache-semantics-4.1.0.tgz#49e91c5cbf36c9b94bcfcd71c23d5249ec74e390"
   integrity sha512-carPklcUh7ROWRK7Cv27RPtdhYhUsela/ue5/jKzjegVvXDqM2ILE9Q2BGn9JZJh1g87cp56su/FgQSzcWS8cQ==
 
-http-errors@^1.6.3, http-errors@^1.7.3:
+http-errors@^1.7.3:
   version "1.7.3"
   resolved "https://registry.yarnpkg.com/http-errors/-/http-errors-1.7.3.tgz#6c619e4f9c60308c38519498c14fbb10aacebb06"
   integrity sha512-ZTTX0MWrsQ2ZAhA1cejAwDLycFsd7I7nVtnkT3Ol0aqodaKW+0CTZDQ1uBv5whptCnc8e8HeRRJxRs0kmm/Qfw==
@@ -7267,7 +7236,7 @@ punycode@^2.1.0, punycode@^2.1.1:
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.1.1.tgz#b58b010ac40c22c5657616c8d2c2c02c7bf479ec"
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
-qs@^6.5.1, qs@^6.5.2:
+qs@^6.5.1:
   version "6.9.4"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.9.4.tgz#9090b290d1f91728d3c22e54843ca44aea5ab687"
   integrity sha512-A1kFqHekCTM7cz0udomYUoYNWjBebHm/5wzU/XqrBRBNWectVH0QIiN+NEcZ0Dte5hvzHwbr8+XQmguPhJ6WdQ==
