@@ -19,9 +19,14 @@ export function handler(
 
       return createSuccessResponse(result);
     } catch (error) {
-      const typedError = error instanceof HttpError
-        ? error
-        : new createHttpError.InternalServerError(error);
+      let typedError;
+      if (error instanceof HttpError) {
+        typedError = error;
+      } else if (error instanceof Error) {
+        typedError = Object.assign(new createHttpError.InternalServerError(error.message), error);
+      } else {
+        typedError = new createHttpError.InternalServerError(error);
+      }
 
       return createErrorResponse(typedError);
     }

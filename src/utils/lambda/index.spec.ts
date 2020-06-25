@@ -16,6 +16,12 @@ describe('Lambda', () => {
     async handlerKo500(message) {
       throw new createHttpError.InternalServerError(message);
     }
+
+    @handler
+    // eslint-disable-next-line class-methods-use-this
+    async handlerKo(message) {
+      throw new Error(message);
+    }
   }
 
   const testEndpoints = new TestEndpoints();
@@ -37,6 +43,20 @@ describe('Lambda', () => {
   test('Endpoint with error result', async () => {
     const message = 'foo';
     const response = await testEndpoints.handlerKo500(message);
+
+    const body = {
+      statusCode: createHttpError.InternalServerError.prototype.status,
+      status: HttpStatus.getStatusText(createHttpError.InternalServerError.prototype.status),
+      error: new createHttpError.InternalServerError(message),
+    };
+
+    expect(response).toHaveProperty('statusCode', createHttpError.InternalServerError.prototype.status);
+    expect(response).toHaveProperty('body', JSON.stringify(body));
+  });
+
+  test('Endpoint with implicit error result', async () => {
+    const message = 'foo';
+    const response = await testEndpoints.handlerKo(message);
 
     const body = {
       statusCode: createHttpError.InternalServerError.prototype.status,
