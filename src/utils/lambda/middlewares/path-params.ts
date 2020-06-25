@@ -34,7 +34,11 @@ export function pathParams(target: any, propertyName: string) {
   }
 }
 
-export const param = (paramKey) => (target: Object, propertyKey: string, paramIndex: number) => {
+export const param = (paramKey: string) => (
+  target: Object,
+  propertyKey: string,
+  paramIndex: number,
+) => {
   pathParams(target, propertyKey);
 
   const existingParamMetadata = Reflect.getOwnMetadata(paramMetadataKey, target, propertyKey) || [];
