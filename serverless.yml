@@ -60,7 +60,24 @@ functions:
     iamRoleStatements:
         - Effect: Allow
           Action:
-            - dynamodb:GetItem
+            - dynamodb:Scan
+          Resource:
+            Fn::GetAtt: [devices, Arn]
+
+  devicesDestroy:
+    handler: src/handlers/devices.destroy
+    events:
+      - http:
+          method: delete
+          path: devices/{id}
+          request:
+            parameters:
+              paths:
+                id: true
+    iamRoleStatements:
+        - Effect: Allow
+          Action:
+            - dynamodb:DeleteItem
           Resource:
             Fn::GetAtt: [devices, Arn]
 

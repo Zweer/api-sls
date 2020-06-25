@@ -1,8 +1,10 @@
 import * as DynamoDB from 'aws-sdk/clients/dynamodb';
 import { DataMapper, PutOptions } from '@aws/dynamodb-data-mapper';
 import {
-  GetParameters,
-  ParallelScanWorkerOptions, QueryOptions,
+  DeleteOptions,
+  GetOptions,
+  ParallelScanWorkerOptions,
+  QueryOptions,
   ScanOptions,
 } from '@aws/dynamodb-data-mapper/build/namedParameters';
 import { ScanIterator } from '@aws/dynamodb-data-mapper/build/ScanIterator';
@@ -21,11 +23,13 @@ export class AbstractModel {
   @attribute()
   updatedAt: Date;
 
-  static async get<T>(parameters: GetParameters<T>): Promise<T> {
-    return mapper.get<T>(parameters);
+  static async get<T>(item: T, options?: GetOptions): Promise<T> {
+    return mapper.get<T>(item, options);
   }
 
-  static scan<T extends AbstractModel>(parameters?: ScanOptions | ParallelScanWorkerOptions): ScanIterator<T> {
+  static scan<T extends AbstractModel>(
+    parameters?: ScanOptions | ParallelScanWorkerOptions,
+  ): ScanIterator<T> {
     return mapper.scan<T>(this as any as ZeroArgumentsConstructor<T>, parameters);
   }
 
@@ -39,5 +43,11 @@ export class AbstractModel {
     this.updatedAt = new Date();
 
     return mapper.put<T>(this as any, options);
+  }
+
+  async destroy<T extends AbstractModel>(
+    options?: DeleteOptions,
+  ): Promise<T | undefined> {
+    return mapper.delete<T>(this as any, options);
   }
 }
