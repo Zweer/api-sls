@@ -1,23 +1,31 @@
 import { HttpError } from 'http-errors';
 import * as createHttpError from 'http-errors';
 
+import { middlewarePositionBefore, middlewarePositionAfter } from './constants';
 import { createErrorResponse, createSuccessResponse } from './response';
+import { MiddlewareBefore } from './types';
 
 export function handler(
-  _target: any,
-  _propertyName: string,
+  target: any,
+  propertyName: string,
   descriptor: TypedPropertyDescriptor<Function>,
 ) {
   const originalMethod = descriptor.value;
 
   // eslint-disable-next-line no-param-reassign
   descriptor.value = async function method(...args) {
-    // const event = args[0];
+    const event = args[0];
+
+    await (Reflect.getOwnMetadata(middlewarePositionBefore, target, propertyName) || [])
+      .reduce((prevMiddleware, middleware: MiddlewareBefore) => prevMiddleware
+        .then(() => middleware(target, propertyName, event, args)), Promise.resolve());
+
+    let response;
 
     try {
       const result = await originalMethod.apply(this, args);
 
-      return createSuccessResponse(result);
+      response = createSuccessResponse(result);
     } catch (error) {
       let typedError;
       if (error instanceof HttpError) {
@@ -28,7 +36,13 @@ export function handler(
         typedError = new createHttpError.InternalServerError(error);
       }
 
-      return createErrorResponse(typedError);
+      (Reflect.getOwnMetadata(middlewarePositionAfter, target, propertyName) || [])
+        .reduce((prevMiddleware, middleware) => prevMiddleware
+          .then(() => middleware(target, propertyName, event, args)), Promise.resolve());
+
+      response = createErrorResponse(typedError);
     }
+
+    return response;
   };
 }

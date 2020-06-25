@@ -3,6 +3,9 @@
   "parserOptions": {
     "project": "./tsconfig.json"
   },
+  "env": {
+    "es6": true
+  },
   "rules": {
     "import/prefer-default-export": 0
   }

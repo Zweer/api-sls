@@ -28,6 +28,8 @@ provider:
   profile: nic
   apiGateway:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
+  httpApi:
+    payload: '2.0'
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
     DYNAMODB_TABLE_DEVICES: ${self:custom.resourceNames.tables.devices}
