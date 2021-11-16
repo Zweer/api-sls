@@ -11,7 +11,7 @@
     "@aws/dynamodb-data-mapper": "^0.7.3",
     "@aws/dynamodb-data-mapper-annotations": "^0.7.3",
     "@aws/dynamodb-data-marshaller": "^0.7.3",
-    "aws-sdk": "^2.701.0",
+    "aws-sdk": "^2.814.0",
     "content-type": "^1.0.4",
     "http-errors": "^1.7.3",
     "http-status-codes": "^1.4.0",
